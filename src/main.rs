@@ -1,6 +1,9 @@
 #![allow(unused_imports)]
+use std::io::Read;
 use std::io::Write;
 use std::net::TcpListener;
+
+use tokio::stream;
 
 fn main() {
     // You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -9,12 +12,19 @@ fn main() {
     // Uncomment the code below to pass the first stage
     //
     let listener = TcpListener::bind("127.0.0.1:6379").unwrap();
+    let mut buf = [0, 512];
+
+    let bytes_read;
 
     for stream in listener.incoming() {
         match stream {
-            Ok(mut stream) => {
+            Ok(mut stream) => loop {
+                bytes_read = stream.read(&mut buf).unwrap();
+                if (bytes_read == 0) {
+                    break;
+                }
                 stream.write_all(b"+PONG\r\n").unwrap();
-            }
+            },
             Err(e) => {
                 println!("error: {}", e);
             }
