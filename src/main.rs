@@ -1,5 +1,4 @@
 #![allow(unused_imports)]
-#[tokio::main]
 use std::io::Read;
 use std::io::Write;
 
@@ -9,6 +8,7 @@ use tokio::net::TcpStream;
 
 use tokio::spawn;
 
+#[tokio::main]
 async fn main() {
     // You can use print statements as follows for debugging, they'll be visible when running tests.
     println!("Logs from your program will appear here!");
